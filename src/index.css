@@ -80,3 +80,33 @@ button:focus-visible {
   margin-bottom: 2rem;
   padding: 1.5rem;
 }
+
+.btn {
+  margin: 0 0.4rem;
+}
+
+.btn-shuffle {
+  font-size: large;
+  background-color: #1e1e1e;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  margin: 10px 0 25px 0;
+}
+
+.input-container input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.input-container input[type="text"]:focus {
+  outline: none;
+  border-color: #66afe9;
+}
+

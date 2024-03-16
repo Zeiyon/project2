@@ -1,33 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Cards = ({ flashcards }) => {
-  const [currentCardNum, setcurrentCardNum] = useState(0);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
-
-  const currentCard = flashcards[currentCardNum];
+  const [userAnswer, setUserAnswer] = useState("");
+  const [answerColor, setAnswerColor] = useState("");
 
   const nextCard = () => {
-    let index;
-    do {
-      index = Math.floor(Math.random() * flashcards.length);
-    } while (index === currentCardNum);
-    setcurrentCardNum(index);
+    setCurrentCardIndex((prevIndex) =>
+      Math.min(prevIndex + 1, flashcards.length - 1)
+    );
     setShowAnswer(false);
+    setUserAnswer("");
+    setAnswerColor("");
+  };
+
+  const prevCard = () => {
+    setCurrentCardIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setShowAnswer(false);
+    setUserAnswer("");
+    setAnswerColor("");
   };
 
   const cardClick = () => {
-    setShowAnswer(true);
+    setShowAnswer(!showAnswer);
   };
+
+  const checkAnswer = () => {
+    if (
+      userAnswer.trim().toLowerCase() ===
+      flashcards[currentCardIndex].answer.toLowerCase()
+    ) {
+      setAnswerColor("green");
+    } else {
+      setAnswerColor("red");
+    }
+  };
+
+  const currentCard = flashcards[currentCardIndex];
 
   return (
     <div className="card">
       <div className="flashcard" onClick={cardClick}>
+        {showAnswer ? (
+          <h2>{currentCard.answer}</h2>
+        ) : (
           <h2>{currentCard.question}</h2>
-        {showAnswer && (
-            <p>{currentCard.answer}</p>
         )}
       </div>
-      <button onClick={nextCard}>Next</button>
+      {
+        <div>
+          <div className="input-container">
+            <input
+              type="text"
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              style={{ borderColor: answerColor }}
+            />
+            <button className="btn" onClick={checkAnswer}>
+              Check
+            </button>
+          </div>
+        </div>
+      }
+      <div className="buttons">
+        <button
+          className="btn"
+          onClick={prevCard}
+          disabled={currentCardIndex === 0}
+        >
+          Previous
+        </button>
+        <button
+          className="btn"
+          onClick={nextCard}
+          disabled={currentCardIndex === flashcards.length - 1}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
